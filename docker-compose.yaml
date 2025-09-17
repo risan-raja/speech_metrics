@@ -1,0 +1,13 @@
+services:
+  debian-shell:
+    build: .
+    container_name: debian_workbench
+    ports:
+      - "9292:8888"
+      - "9291:8080"
+      - "9290:8000"
+    volumes:
+      - ./:/root/work
+    stdin_open: true
+    tty: true
+    command: bash

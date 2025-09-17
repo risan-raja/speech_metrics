@@ -1,0 +1,39 @@
+[project]
+name = "speech-metrics"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12.11"
+dependencies = [
+  "fairseq",
+  "librosa>=0.11.0",
+  "onnxruntime>=1.22.1",
+  "silero-vad>=6.0.0",
+  "soundfile>=0.13.1",
+  "speechmos>=0.0.1.1",
+  "torch>=2.8.0",
+  "torchaudio>=2.8.0",
+  "torchcodec>=0.7.0",
+]
+
+[dependency-groups]
+dev = [
+  "fastparquet>=2024.11.0",
+  "jupyterlab>=4.4.7",
+  "jupyterlab-git>=0.51.2",
+  "pandas>=2.3.2",
+  "pre-commit>=4.3.0",
+  "pyarrow>=21.0.0",
+  "pytest>=8.4.2",
+  "pytest-datadir>=1.8.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+pythonpath = "src"
+
+[tool.uv.sources]
+fairseq = { git = "https://github.com/liyaodev/fairseq.git" }
