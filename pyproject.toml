@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12.11"
 dependencies = [
   "fairseq",
+  "huggingface-hub>=0.35.0",
   "librosa>=0.11.0",
   "onnxruntime>=1.22.1",
   "silero-vad>=6.0.0",
@@ -19,6 +20,7 @@ dependencies = [
 [dependency-groups]
 dev = [
   "fastparquet>=2024.11.0",
+  "ipywidgets>=8.1.7",
   "jupyterlab>=4.4.7",
   "jupyterlab-git>=0.51.2",
   "pandas>=2.3.2",

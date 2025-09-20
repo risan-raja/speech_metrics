@@ -1,6 +1,5 @@
 import torchcodec
 import pytest
-from pathlib import Path
 
 # from metrics import ScoreQMetrics
 from speech_metrics.scoreq.metrics import ScoreQMetrics
@@ -15,8 +14,7 @@ def test_scoreq_metrics(test_case, shared_datadir):
     # Assumes the test data is in a shared directory provided by pytest-datadir
     # and the model weights are in the 'scoreq' module directory.
     audio_path = shared_datadir / f"audio_{test_case}.wav"
-    model_dir = Path(__file__).parent
-    model_path = model_dir / "adapt_nr_telephone.pt"
+    model_path = shared_datadir / "adapt_nr_telephone.pt"
 
     # 1. Load the audio file using torchcodec
     audio_data = torchcodec.decoders.AudioDecoder(str(audio_path)).get_all_samples()
