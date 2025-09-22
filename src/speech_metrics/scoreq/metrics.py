@@ -7,6 +7,7 @@ from pathlib import Path
 
 # --- Helper PyTorch Modules (Internal to this file) ---
 
+
 class TripletModel(nn.Module):
     def __init__(self, ssl_model, ssl_out_dim, emb_dim=256):
         super(TripletModel, self).__init__()
@@ -25,6 +26,7 @@ class TripletModel(nn.Module):
         x = torch.nn.functional.normalize(x, dim=1)
         return x
 
+
 class MosPredictor(nn.Module):
     def __init__(self, pt_model, emb_dim=768):
         super(MosPredictor, self).__init__()
@@ -38,18 +40,23 @@ class MosPredictor(nn.Module):
         out = self.mos_layer(x)
         return out
 
+
 # --- Main Metric Class ---
+
 
 class ScoreQMetrics:
     """
     Computes the ScoreQ MOS score for a given audio sample.
     """
-    def __init__(self, model_path: Path, wav2vec_model_name: str = "facebook/wav2vec2-base-960h"):
+
+    def __init__(
+        self, model_path: Path, wav2vec_model_name: str = "facebook/wav2vec2-base-960h"
+    ):
         self.device = self._get_device()
-        
+
         # Load the wav2vec base model from Hugging Face
-        ssl_model = Wav2Vec2Model.from_pretrained(wav2vec_model_name).to(self.device)
-        
+        ssl_model = Wav2Vec2Model.from_pretrained(wav2vec_model_name).to(self.device)  # type: ignore
+
         # Build the full model architecture
         pt_model = TripletModel(ssl_model, ssl_out_dim=768, emb_dim=256)
         self.scoreq_model = MosPredictor(pt_model, emb_dim=768)
@@ -81,14 +88,14 @@ class ScoreQMetrics:
         # Ensure audio is mono and has a batch dimension [1, num_samples]
         if audio_tensor.shape[0] > 1:
             audio_tensor = torch.mean(audio_tensor, dim=0, keepdim=True)
-        
+
         audio_tensor = audio_tensor.to(self.device)
-        
+
         with torch.no_grad():
             mos_tensor = self.scoreq_model(audio_tensor)
-        
+
         mos_score = mos_tensor.item()
-        
+
         return {"SCOREQ_MOS": mos_score}
 
     def _get_device(self):
